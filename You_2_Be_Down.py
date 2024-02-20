@@ -49,7 +49,7 @@ def baixar_playlist_ytmusic(url, playlist_folder):
         driver.quit()
 
 def download_playlist(playlists):
-    escritorio_path = "C:\\Users\\"
+    escritorio_path = "C:\\Users\\" #Edita para salvar em algum diretorio da tua preferência
 
     processes = []
     for url, folder_name in playlists:
@@ -74,10 +74,9 @@ def processar_urls_from_txt(txt_file):
                 url = parts[0].strip()
                 folder_name = parts[1].strip()
                 playlists.append((url, folder_name))
-            else:
-                # Se houver mais de dois valores após dividir a linha, vamos juntar os valores extras como parte do nome da pasta
+            else:               
                 url = parts[0].strip()
-                folder_name = '--'.join(parts[1:]).strip()  # Juntar os valores extras
+                folder_name = '--'.join(parts[1:]).strip() 
                 playlists.append((url, folder_name))
     return playlists
 
