@@ -5,7 +5,7 @@ U TWO to MP4
 
 
 
---------> Programinha pra baixar varias playlist do YoutubeMusic simultaneamente.
+--------> Programinha pra baixar varias playlist do YoutubeMusic simultaneamente. (YutubeMusic ONLY!)
 
 Você pode passar um arquivo .txt com os links das playlists assim:
 
