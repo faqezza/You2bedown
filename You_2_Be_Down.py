@@ -21,8 +21,9 @@ def baixar_playlist_ytmusic(url, playlist_folder):
     options = webdriver.EdgeOptions()
     options.use_chromium = True
     options.headless = False  # Se quiser ver o navegador em ação, mude para True
-    driver = webdriver.Edge(options=options)
+    driver = webdriver.Edge(options=options)  
     driver.minimize_window()
+
     wait = WebDriverWait(driver, 20)
 
     driver.get(url)
@@ -49,21 +50,21 @@ def baixar_playlist_ytmusic(url, playlist_folder):
         driver.quit()
 
 def download_playlist(playlists):
-    escritorio_path = "C:\\Users\\" #Edita para salvar em algum diretorio da tua preferência
+    escritorio_path = "C:\\Users\\"
 
-    processes = []
+    max_processes = 15  # Defina o número máximo de navegadores que você deseja abrir simultaneamente
+    pool = multiprocessing.Pool(processes=max_processes)
+
     for url, folder_name in playlists:
         playlist_path = os.path.join(escritorio_path, folder_name)
 
         if not os.path.exists(playlist_path):
             os.makedirs(playlist_path)
 
-        process = multiprocessing.Process(target=baixar_playlist_ytmusic, args=(url, playlist_path))
-        processes.append(process)
-        process.start()
+        pool.apply_async(baixar_playlist_ytmusic, args=(url, playlist_path))
 
-    for process in processes:
-        process.join()
+    pool.close()
+    pool.join()
 
 def processar_urls_from_txt(txt_file):
     playlists = []
@@ -74,9 +75,9 @@ def processar_urls_from_txt(txt_file):
                 url = parts[0].strip()
                 folder_name = parts[1].strip()
                 playlists.append((url, folder_name))
-            else:               
+            else:                
                 url = parts[0].strip()
-                folder_name = '--'.join(parts[1:]).strip() 
+                folder_name = '--'.join(parts[1:]).strip()
                 playlists.append((url, folder_name))
     return playlists
 
