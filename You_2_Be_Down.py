@@ -20,11 +20,11 @@ def imprimir_banner(texto, creditos):
 def baixar_playlist_ytmusic(url, playlist_folder):
     options = webdriver.EdgeOptions()
     options.use_chromium = True
-    options.headless = False  # Se quiser ver o navegador em ação, mude para True
-    driver = webdriver.Edge(options=options)  
-    driver.minimize_window()
+    options.headless = True
+    driver = webdriver.Edge(options=options)
+    #driver.minimize_window() 
 
-    wait = WebDriverWait(driver, 20)
+    wait = WebDriverWait(driver, 10000)
 
     driver.get(url)
 
@@ -44,64 +44,74 @@ def baixar_playlist_ytmusic(url, playlist_folder):
                     else:
                         print("Vídeo indisponível ou não encontrado:", music_url)
                 except Exception as e:
-                    print("Ocorreu um erro ao baixar o vídeo:", str(e))
+                    print("\nOcorreu um erro ao baixar o vídeo:", str(e))
 
     finally:
         driver.quit()
 
 def download_playlist(playlists):
-    escritorio_path = "C:\\Users\\"
+    try:
+        escritorio_path = "C:\\Users\\" # Mudar para o diretorio de preferência
 
-    max_processes = 15  # Defina o número máximo de navegadores que você deseja abrir simultaneamente
-    pool = multiprocessing.Pool(processes=max_processes)
+        max_processes = 20 
+        pool = multiprocessing.Pool(processes=max_processes)
 
-    for url, folder_name in playlists:
-        playlist_path = os.path.join(escritorio_path, folder_name)
+        for url, folder_name in playlists:
+            playlist_path = os.path.join(escritorio_path, folder_name)
 
-        if not os.path.exists(playlist_path):
-            os.makedirs(playlist_path)
+            if not os.path.exists(playlist_path):
+                os.makedirs(playlist_path)
 
-        pool.apply_async(baixar_playlist_ytmusic, args=(url, playlist_path))
+            pool.apply_async(baixar_playlist_ytmusic, args=(url, playlist_path))
 
-    pool.close()
-    pool.join()
+        pool.close()
+        pool.join()
+    except Exception as error:
+        print(f"\nTivemos um problema Willis {error}\n")
 
 def processar_urls_from_txt(txt_file):
-    playlists = []
-    with open(txt_file, 'r') as file:
-        for line in file:
-            parts = line.strip().split('--', 1)
-            if len(parts) == 2:
-                url = parts[0].strip()
-                folder_name = parts[1].strip()
-                playlists.append((url, folder_name))
-            else:                
-                url = parts[0].strip()
-                folder_name = '--'.join(parts[1:]).strip()
-                playlists.append((url, folder_name))
-    return playlists
-
+    try:
+        playlists = []
+        with open(txt_file, 'r') as file:
+            for line in file:
+                parts = line.strip().split('--', 1)
+                if len(parts) == 2:
+                    url = parts[0].strip()
+                    folder_name = parts[1].strip()
+                    playlists.append((url, folder_name))
+                else:
+                    url = parts[0].strip()
+                    folder_name = '--'.join(parts[1:]).strip()
+                    playlists.append((url, folder_name))
+        return playlists
+    except Exception as error:
+        print(f"\nTivemos um problema Willis {error}\n")
 def usage():
     print('\n----> Programa feito para baixar playlists de Youtube Music no formato .MP4\n----> Você vai precisar do navegador Edge\n----> Path default onde serão salvos os arquivos C:\\Users\\\n----> O formato da lista com as URLS playlist.txt deve ser assim:\n          https://music.youtube.com/playlist1 --NOME_DA_PASTA1\n          https://music.youtube.com/playlist2 --NOME_DA_PASTA2')
 
 
 if __name__ == "__main__":
-    texto = "YOU   2   BE   DOWN"
-    creditos = "By  --->  Faqez"
-    imprimir_banner(texto, creditos)
-    usage()
-    usar_arquivo = input("\nDeseja passar um arquivo.txt com as URLs das playlists? (y/n): ").lower() == 'y'
+    try:
+        texto = "YOU   2   BE   DOWN"
+        creditos = "By  --->  Faqez"
+        imprimir_banner(texto, creditos)
+        usage()
+        usar_arquivo = input("\nDeseja passar um arquivo.txt com as URLs das playlists? (y/n): ").lower() == 'y'
 
-    if usar_arquivo:
-        txt_file = input("Insira o caminho do arquivo .txt: ")
-        playlists = processar_urls_from_txt(txt_file)
-    else:
-        num_playlists = int(input("Quantas playlists você deseja baixar? "))
-        playlists = []
-        for i in range(num_playlists):
-            url = input(f"Insira a URL da {i+1}ª playlist do YouTube Music: ")
-            folder_name = input(f"Insira o nome da pasta para a {i+1}ª playlist: ")
-            playlists.append((url, folder_name))
+        if usar_arquivo:
+            txt_file = input("Insira o caminho do arquivo .txt: ")
+            playlists = processar_urls_from_txt(txt_file)
+        else:
+            num_playlists = int(input("Quantas playlists você deseja baixar? "))
+            playlists = []
+            for i in range(num_playlists):
+                url = input(f"Insira a URL da {i+1}ª playlist do YouTube Music: ")
+                folder_name = input(f"Insira o nome da pasta para a {i+1}ª playlist: ")
+                playlists.append((url, folder_name))
 
-    download_playlist(playlists)
-    print('\n\nOBRIGADO, TUDO DE BOM!!!!\n')
+        download_playlist(playlists)
+        print('\n\nOBRIGADO, TUDO DE BOM!!!!\n')
+
+    except Exception as error:
+        print(f'\nOuve um problema ao tentar baixar os videos :(  {error}\n')
+
