@@ -5,7 +5,7 @@ U TWO to MP4
 
 
 
---------> Programinha feito em Python para baixar varias playlist do YoutubeMusic simultaneamente. (For Windows, YutubeMusic ONLY!!!)
+----> Programinha feito em Python para baixar varias playlist do YoutubeMusic simultaneamente. (For Windows, YutubeMusic ONLY!!!)
 
 Você pode passar um arquivo "playlists.txt" com os links das playlists assim:
 
