@@ -8,6 +8,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from pytube import YouTube
 from termcolor import colored
 
+
 def imprimir_banner(texto, creditos):
     banner = pyfiglet.figlet_format(texto, font="smslant")
     texto_verde = colored(banner, color='green')
@@ -22,10 +23,8 @@ def baixar_playlist_ytmusic(url, playlist_folder):
     options.use_chromium = True
     options.headless = True
     driver = webdriver.Edge(options=options)
-    #driver.minimize_window() 
-
+    #driver.minimize_window()
     wait = WebDriverWait(driver, 10000)
-
     driver.get(url)
 
     try:
@@ -49,6 +48,7 @@ def baixar_playlist_ytmusic(url, playlist_folder):
     finally:
         driver.quit()
 
+
 def download_playlist(playlists):
     try:
         escritorio_path = "C:\\Users\\" # Mudar para o diretorio de preferência
@@ -69,6 +69,7 @@ def download_playlist(playlists):
     except Exception as error:
         print(f"\nTivemos um problema Willis {error}\n")
 
+
 def processar_urls_from_txt(txt_file):
     try:
         playlists = []
@@ -86,6 +87,8 @@ def processar_urls_from_txt(txt_file):
         return playlists
     except Exception as error:
         print(f"\nTivemos um problema Willis {error}\n")
+
+
 def usage():
     print('\n----> Programa feito para baixar playlists de Youtube Music no formato .MP4\n----> Você vai precisar do navegador Edge\n----> Path default onde serão salvos os arquivos C:\\Users\\\n----> O formato da lista com as URLS playlist.txt deve ser assim:\n          https://music.youtube.com/playlist1 --NOME_DA_PASTA1\n          https://music.youtube.com/playlist2 --NOME_DA_PASTA2')
 
