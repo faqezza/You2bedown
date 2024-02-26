@@ -13,8 +13,6 @@ U TWO B to MP4  :)
 
 Ou passar os links separadamente.
 
-Tú que sabe...
-
 Valeu!!!!!
 
 Hasta la vista Baby!!!!
